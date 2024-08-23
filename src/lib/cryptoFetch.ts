@@ -22,8 +22,10 @@ export const cryptoFetch = async (cryptoMoeda: string, link: string) => {
   const imageUrl = pairInfo.info.imageUrl;
   const marketcap = pairInfo.fdv;
   const labels = data.pair.labels;
+  const socials = data.pair.info.socials;
 
   return {
+    socials,
     labels,
     marketcap,
     imageUrl,

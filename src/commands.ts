@@ -6,9 +6,15 @@ export const commands = [
     .setDescription("Comando para informações de criptomoedas")
     .addStringOption((option) =>
       option
+        .setName("pair")
+        .setDescription("Informe um link ou ID relacionado à criptomoeda")
+        .setRequired(true)
+    )
+    .addStringOption((option) =>
+      option
         .setName("chain")
         .setDescription("Escolha uma cryptomoeda")
-        .setRequired(true)
+        .setRequired(false)
         .addChoices(
           { name: "Moonshot", value: "moonshot" },
           { name: "Solana", value: "solana" },
@@ -21,11 +27,5 @@ export const commands = [
           { name: "Avalanche", value: "avalanche" },
           { name: "Optimism", value: "optimism" }
         )
-    )
-    .addStringOption((option) =>
-      option
-        .setName("address")
-        .setDescription("Informe um link ou ID relacionado à criptomoeda")
-        .setRequired(true)
     ),
 ];

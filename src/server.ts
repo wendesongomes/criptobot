@@ -24,10 +24,19 @@ client.on("interactionCreate", async (interaction) => {
 
   if (commandName === "dexscreener") {
     const cryptomoeda = options.getString("chain");
-    const link = options.getString("address");
+    const link = options.getString("pair");
 
-    if (link && cryptomoeda) {
+    if (cryptomoeda && link) {
       const id = link.split("/")[link.split("/").length - 1];
+
+      const cryptoData = await cryptoFetch(cryptomoeda, id);
+      const embedCrypto = embed(cryptoData);
+      await interaction.reply({ embeds: [embedCrypto] });
+    }
+
+    if (link) {
+      const id = link.split("/")[link.split("/").length - 1];
+      const cryptomoeda = link.split("/")[link.split("/").length - 2];
 
       const cryptoData = await cryptoFetch(cryptomoeda, id);
       const embedCrypto = embed(cryptoData);
