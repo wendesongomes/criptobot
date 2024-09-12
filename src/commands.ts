@@ -13,7 +13,7 @@ export const commands = [
     .addStringOption((option) =>
       option
         .setName("chain")
-        .setDescription("Escolha uma cryptomoeda")
+        .setDescription("Escolha uma criptomoeda")
         .setRequired(false)
         .addChoices(
           { name: "Moonshot", value: "moonshot" },
@@ -26,6 +26,23 @@ export const commands = [
           { name: "Tron", value: "tron" },
           { name: "Avalanche", value: "avalanche" },
           { name: "Optimism", value: "optimism" }
+        )
+    ),
+
+  new SlashCommandBuilder()
+    .setName("pools")
+    .setDescription("Comando para visualizar pools de liquidez")
+    .addStringOption((option) =>
+      option
+        .setName("chain")
+        .setDescription("Escolha a blockchain da pool")
+        .setRequired(false)
+        .addChoices(
+          { name: "Ethereum", value: "ethereum" },
+          { name: "Base", value: "base" },
+          { name: "Solana", value: "solana" },
+          { name: "Solana/orca", value: "solana/orca" },
+          { name: "Solana/raydium", value: "solana/raydium" }
         )
     ),
 ];

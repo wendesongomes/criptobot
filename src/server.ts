@@ -43,6 +43,56 @@ client.on("interactionCreate", async (interaction) => {
       await interaction.reply({ embeds: [embedCrypto] });
     }
   }
+
+  if (commandName === "pools") {
+    const cryptomoeda: string | null = options.getString("chain");
+
+    if (!cryptomoeda) {
+      return interaction.reply("Cryptomoeda é obrigatória");
+    }
+
+    const response = await fetch(
+      `https://dexscreen-pools.vercel.app/api/webhook`
+    );
+
+    const { data } = await response.json();
+
+    const dataFilter = data.filter((data) => data.chain === cryptomoeda);
+
+    await interaction.reply(
+      `Encontrado ${dataFilter.length} resultados para a chain ${cryptomoeda}.`
+    );
+
+    const poolsList = [];
+    dataFilter.forEach((item) => {
+      item.pools.forEach((pool) => {
+        poolsList.push(pool);
+      });
+    });
+
+    // Agrupa os pools em lotes de 10
+    const chunkedPools = [];
+    for (let i = 0; i < poolsList.length; i += 10) {
+      chunkedPools.push(poolsList.slice(i, i + 10));
+    }
+
+    // Envia uma mensagem para cada lote de 10 pools
+    for (const [index, chunk] of chunkedPools.entries()) {
+      const message = chunk
+        .map(
+          (pool, idx) =>
+            `**Rank ${index * 10 + idx + 1}**\n` +
+            `📈 **Name:** ${pool.name} (${pool.proporcao})\n` +
+            `💧 **Liquidez 24h:** ${pool.liquidity24h}\n` +
+            `🔄 **Volume 24h:** ${pool.volume24h}\n` +
+            `🔗 **URL:** [Link](${pool.url})\n\n`
+        )
+        .join("");
+
+      // Envia o lote de 10 pools
+      await interaction.followUp(message);
+    }
+  }
 });
 
 client.login(env.TOKEN);
